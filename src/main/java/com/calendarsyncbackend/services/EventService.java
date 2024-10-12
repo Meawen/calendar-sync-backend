@@ -26,7 +26,7 @@ public class EventService {
     public Optional<Event> getEventById(int id) {
         return eventRepository.findById(id);
     }
-    public Page<Event> getEventsPagable(Pageable pageable) {
+    public Page<Event> getEventsPageable(Pageable pageable) {
         return eventRepository.findAll(pageable);
     }
     public Event createEvent(Event event) {
