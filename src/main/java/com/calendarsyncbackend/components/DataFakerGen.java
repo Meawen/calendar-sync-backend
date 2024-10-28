@@ -6,6 +6,7 @@ import com.calendarsyncbackend.repositories.EventRepository;
 import com.calendarsyncbackend.repositories.UserRepository;
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.time.Instant;
@@ -19,6 +20,9 @@ public class DataFakerGen implements CommandLineRunner {
 
     private final Faker faker = new Faker();
 
+    @Value("${dataloader.enabled:true}")
+    private boolean enabled;
+
     @Autowired
     public DataFakerGen(UserRepository userRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
@@ -27,6 +31,11 @@ public class DataFakerGen implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        if (!enabled) {
+            return;
+        }
+
         IntStream.range(1, 20).forEach(i -> {
             User user = new User();
             user.setUsername(faker.internet().domainWord());
